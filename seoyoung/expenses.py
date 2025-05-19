@@ -1,7 +1,7 @@
 import tkinter as tk
 from datetime import datetime
 
-def expenses(frame):
+def expenses(frame, get_date):
     for widget in frame.winfo_children(): # 기존 프레임 위젯 삭제
         widget.destroy()
 
@@ -16,7 +16,7 @@ def expenses(frame):
 
     def update_total():
         total=0
-        for item in listbox.get(0, tk.END): #값을 가져옴
+        for item in listbox.get(0, tk.END):
             try:
                 amount=int(item.split(":")[1].strip().replace("원", "")) #:를 기준으로 list 만들고, 글자 원을 지운다
                 total+=amount
@@ -31,10 +31,12 @@ def expenses(frame):
             update_total()
 
     def save():
-        today = datetime.now().strftime("%Y-%m-%d")
+        # today = datetime.now().strftime("%Y-%m-%d")
+        selected_date = get_date()
+
+        file_name = f"가계부_지출_{selected_date}.txt"
         expenses = listbox.get(0, tk.END) #listbox 있는 데이터 가져오기
         currentTotal = int(total_label.cget("text").split(":")[1].strip().replace("원", ""))
-        file_name = f"가계부_지출_{today}.txt"
         lastTotal = 0
 
         try: # 기존 총 지출 값 불러오기

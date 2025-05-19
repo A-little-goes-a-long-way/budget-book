@@ -1,7 +1,7 @@
 import tkinter as tk
 from datetime import datetime
 
-def deposit(frame):
+def deposit(frame, get_date):
     for widget in frame.winfo_children(): # 기존 프레임 위젯 삭제
         widget.destroy()
 
@@ -31,10 +31,10 @@ def deposit(frame):
             update_total()
 
     def save():
-        today = datetime.now().strftime("%Y-%m-%d")
+        selected_date = get_date()
+        file_name = f"가계부_수입{selected_date}.txt"
         deposit = listbox.get(0, tk.END)
         currentTotal = int(total_label.cget("text").split(":")[1].strip().replace("원", ""))
-        file_name = f"가계부_수입_{today}.txt"
         lastTotal = 0
 
         try:

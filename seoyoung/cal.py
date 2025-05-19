@@ -24,32 +24,52 @@ def calendar(frame):
     #캘린더, 지출, 수입 프레임을 캔버스 프레임에 추가
     calFrame = LabelFrame(scrLable_frame, text="캘린더")
     calFrame.grid(row=0, column=0, padx=20)
-    cal = Calendar(calFrame, selectmode='day')
+
+    cal = Calendar(calFrame, selectmode='day', date_pattern="yyyy-mm-dd")
     cal.grid(row=0, column=0)
 
-    expensesFrame = LabelFrame(scrLable_frame, text="지출")
+    # 선택된 날짜를 추적
+    selectedDate = cal.get_date()  # 초기 날짜 설정
+
+    # 날짜 선택 이벤트 핸들링
+    def updateSelectedDate(event):
+        nonlocal selectedDate
+        selectedDate = cal.get_date()  # 선택된 날짜 업데이트
+        print(f"Selected date updated to: {selectedDate}")
+
+    cal.bind("<<CalendarSelected>>", updateSelectedDate)
+
+
+
+    expensesFrame = LabelFrame(scrLable_frame, text="지출") #지출 영역 생성
     expensesFrame.grid(row=0, column=2, padx=30)
-    expenses(expensesFrame)
+    expenses(expensesFrame, lambda: selectedDate)
 
     depositFrame = LabelFrame(scrLable_frame, text="수입")
     depositFrame.grid(row=0, column=3, pady=30)
-    deposit(depositFrame)
+    deposit(depositFrame, lambda: selectedDate)
 
     dataFrame = LabelFrame(scrLable_frame, text="선택된 날짜의 수입/지출 내역")
-    dataFrame.grid(row=2, column=0, columnspan=4, pady=20, sticky="nsew")
+    dataFrame.grid(row=1, column=0, columnspan=5, pady=30, sticky="nsew")
 
-    def loadData(filepath):
+    def loadData(filepath): #파일에서 데이터를 읽어 리스트로 반환
         data = []
         if os.path.exists(filepath):
             with open(filepath, encoding="utf-8") as file:
                 for line in file:
-                    if line:
+                    if line.strip():
                         data.append(line)
+        else:
+            print(f"File not found: {filepath}")  # 파일 없을 경우 디버그 메시지 출력
         return data
 
+
+    #선택된 날짜의 데이터를 표시하는 함수
     def displayData():
+        nonlocal selectedDate
         #사용자가 캘린더에서 날짜를 클릭할 때 호출. 선택된 날짜에 해당하는 내역을 dataFrame에 로드하여 표시.
-        selectedDate = cal.get_date() #현재 선택된 날짜 가져옴
+        selectedDate = cal.get_date() #캘린더에서 현재 선택된 날짜 가져옴
+        print(f"[DEBUG] Selected date: {selectedDate}")
 
         expenses_file = f"가계부_지출_{selectedDate}.txt"
         deposit_file = f"가계부_수입_{selectedDate}.txt"
@@ -59,30 +79,28 @@ def calendar(frame):
         deposit_data = loadData(deposit_file)
 
         for widget in dataFrame.winfo_children():
-            widget.destroy()
+           widget.destroy()
 
-        tk.Label(dataFrame, text="지출 내역: ").grid(anchor="w", row=2, column=0, padx=10)
-        if expenses_data:
+        tk.Label(dataFrame, text="지출 내역: ").grid(row=0, column=0, padx=10)
+        if expenses_data: #지출 데이터가 없는 경우
             for row_index, expense in enumerate(expenses_data, start=1):
                 tk.Label(dataFrame, text=expense, anchor="w").grid(row=row_index, column=0, sticky="w", padx=5)
         else:
-            tk.Label(dataFrame, text="지출 내역이 없습니다.", fg="gray").grid(row=1, column=0, sticky="w", padx=5)
+            tk.Label(dataFrame, text="지출 내역이 없습니다.", fg="gray").grid(row=2, column=0, sticky="w", padx=5)
 
         # 수입 내역 섹션
-        row_offset = len(expenses_data) + 2  # 지출 섹션의 마지막 행 직후 (행 오프셋 설정)
-        tk.Label(dataFrame, text="수입 내역:", font=("Arial", 10, "bold")).grid(row=row_offset, column=0, sticky="w",
-                                                                                padx=5, pady=5)
+        row_offset = len(expenses_data) + 1  # 지출 섹션의 마지막 행 직후 (행 오프셋 설정)
+        tk.Label(dataFrame, text="수입 내역:").grid(row=row_offset, column=0, sticky="w", padx=5, pady=5)
 
-        if deposit_data:
+        if deposit_data: #수입 데이터가 없는 경우
             for row_index, deposit in enumerate(deposit_data, start=row_offset + 1):
                 tk.Label(dataFrame, text=deposit, anchor="w").grid(row=row_index, column=0, sticky="w", padx=5)
 
         else:
             tk.Label(dataFrame, text="수입 내역이 없습니다.", fg="gray").grid(row=row_offset + 1, column=0, sticky="w", padx=5)
 
-        # 캘린더 클릭 이벤트에 display_data 함수 연결
-        cal.bind("<<CalendarSelected>>", lambda event: displayData())
-
+    # 캘린더 클릭 이벤트에 display_data 함수 연결
+    cal.bind("<<CalendarSelected>>", lambda event: displayData())
 
     def scrollregion(event):
         canvas.configure(scrollregion=canvas.bbox("all"))
