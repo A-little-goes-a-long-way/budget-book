@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="76518436-4194-482e-a85f-42a1b5544d80" name="Changes" comment="" />
+    <list default="true" id="76518436-4194-482e-a85f-42a1b5544d80" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seoyoung/dateViewer.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/seoyoung/deposit.py" beforeDir="false" afterPath="$PROJECT_DIR$/seoyoung/deposit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seoyoung/expenses.py" beforeDir="false" afterPath="$PROJECT_DIR$/seoyoung/expenses.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seoyoung/index.py" beforeDir="false" afterPath="$PROJECT_DIR$/seoyoung/index.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seoyoung/test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/seoyoung/가계부_지출_2025-05-17.txt" beforeDir="false" afterPath="$PROJECT_DIR$/seoyoung/가계부_지출_2025-05-17.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -38,7 +46,7 @@
     "Python.test.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "C:/PythonProject"
   }
 }]]></component>

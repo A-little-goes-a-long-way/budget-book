@@ -1,7 +1,7 @@
 import tkinter as tk
 from datetime import datetime
 
-def deposit(frame, get_date):
+def deposit(frame, get_date, update=None):
     for widget in frame.winfo_children(): # 기존 프레임 위젯 삭제
         widget.destroy()
 
@@ -32,7 +32,7 @@ def deposit(frame, get_date):
 
     def save():
         selected_date = get_date()
-        file_name = f"가계부_수입{selected_date}.txt"
+        file_name = f"가계부_수입_{selected_date}.txt"
         deposit = listbox.get(0, tk.END)
         currentTotal = int(total_label.cget("text").split(":")[1].strip().replace("원", ""))
         lastTotal = 0
@@ -57,6 +57,9 @@ def deposit(frame, get_date):
         # 저장 완료 확인 메시지 표시
         savedLabel.config(text="저장되었습니다!")  # 저장 라벨 업데이트
         savedLabel.after(2000, lambda: savedLabel.config(text=""))  # 2초 후 메시지 삭제
+
+        if update:
+            update() #탭 업데이트를 위해
 
     name_label=tk.Label(frame,text="품목") #Label 위젯 설정
     name_label.grid(row=0, column=1) #창에 배치하기

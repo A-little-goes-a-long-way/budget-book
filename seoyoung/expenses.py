@@ -1,7 +1,7 @@
 import tkinter as tk
 from datetime import datetime
 
-def expenses(frame, get_date):
+def expenses(frame, get_date, update=None):
     for widget in frame.winfo_children(): # 기존 프레임 위젯 삭제
         widget.destroy()
 
@@ -59,6 +59,9 @@ def expenses(frame, get_date):
 
         savedLabel.config(text="저장되었습니다!")  # 저장 확인 메시지
         savedLabel.after(3000, lambda: savedLabel.config(text=""))
+
+        if update:
+            update()
 
     name_label=tk.Label(frame,text="품목") #Label 위젯 설정
     name_label.grid(row=0, column=1) #창에 배치하기
